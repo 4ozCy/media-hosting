@@ -289,7 +289,7 @@
           <li><i class="fas fa-image"></i> Images: JPG, PNG, GIF, SVG, WebP</li>
           <li><i class="fas fa-video"></i> Videos: MP4, WebM, MOV</li>
           <li><i class="fas fa-music"></i> Audio: MP3, WAV, OGG</li>
-          <li><i class="fas fa-weight-hanging"></i> Maximum file size: 10MB</li>
+          <li><i class="fas fa-weight-hanging"></i> Maximum file size: 2GBMB</li>
         </ul>
       </div>
     </form>
@@ -362,8 +362,8 @@
         fileNameDisplay.textContent = file.name;
         
         // Validate file size (10MB max)
-        if (file.size > 10 * 1024 * 1024) {
-          errorMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> File size exceeds 10MB limit';
+        if (file.size > 2000 * 1024 * 1024) {
+          errorMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> File size exceeds 2GB limit';
           previewContainer.style.display = 'none';
           submitBtn.disabled = true;
           return;
@@ -408,9 +408,9 @@
           return;
         }
         
-        if (file.size > 10 * 1024 * 1024) {
+        if (file.size > 2000 * 1024 * 1024) {
           e.preventDefault();
-          errorMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> File size exceeds 10MB limit';
+          errorMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> File size exceeds 2GB limit';
           return;
         }
         
