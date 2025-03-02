@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shared Media - Media Hosting</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3f37c9;
+      --accent-color: #4cc9f0;
+      --text-color: #333;
+      --light-gray: #f8f9fa;
+      --medium-gray: #e9ecef;
+      --dark-gray: #6c757d;
+      --success-color: #4CAF50;
+      --danger-color: #f44336;
+      --border-radius: 8px;
+      --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: var(--light-gray);
+      color: var(--text-color);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--medium-gray);
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .logo i {
+      font-size: 24px;
+      color: var(--primary-color);
+    }
+    
+    h1 {
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+    
+    .home-btn {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-size: 16px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
+    }
+    
+    .home-btn:hover {
+      background-color: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+    
+    .media-container {
+      background-color: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      overflow: hidden;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .media-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--medium-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .media-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-color);
+      word-break: break-all;
+    }
+    
+    .media-meta {
+      color: var(--dark-gray);
+      font-size: 14px;
+      display: flex;
+      gap: 15px;
+    }
+    
+    .media-meta div {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .media-content {
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
+      background-color: var(--light-gray);
+      overflow: auto;
+    }
+    
+    .media-content img {
+      max-width: 100%;
+      max-height: 70vh;
+      object-fit: contain;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+    }
+    
+    .media-content video {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+    }
+    
+    .media-content audio {
+      width: 100%;
+      max-width: 500px;
+    }
+    
+    .audio-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    
+    .audio-icon {
+      font-size: 80px;
+      color: var(--primary-color);
+    }
+    
+    .unknown-icon {
+      font-size: 80px;
+      color: var(--dark-gray);
+    }
+    
+    .media-footer {
+      padding: 15px 20px;
+      border-top: 1px solid var(--medium-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--light-gray);
+    }
+    
+    .media-actions {
+      display: flex;
+      gap: 15px;
+    }
+    
+    .action-btn {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-size: 14px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: var(--transition);
+    }
+    
+    .action-btn:hover {
+      background-color: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+    
+    .action-btn.download {
+      background-color: var(--success-color);
+    }
+    
+    .action-btn.download:hover {
+      background-color: #3d8b40;
+    }
+    
+    .loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 50px;
+      color: var(--dark-gray);
+      flex: 1;
+    }
+    
+    .loading i {
+      font-size: 40px;
+      margin-bottom: 15px;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .error-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 50px;
+      text-align: center;
+      flex: 1;
+    }
+    
+    .error-icon {
+      font-size: 60px;
+      color: var(--danger-color);
+      margin-bottom: 20px;
+    }
+    
+    .error-title {
+      font-size: 24px;
+      color: var(--text-color);
+      margin-bottom: 10px;
+    }
+    
+    .error-message {
+      color: var(--dark-gray);
+      margin-bottom: 20px;
+    }
+    
+    footer {
+      margin-top: 30px;
+      text-align: center;
+      color: var(--dark-gray);
+      font-size: 14px;
+    }
+    
+    @media (max-width: 768px) {
+      .media-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      
+      .media-meta {
+        flex-direction: column;
+        gap: 5px;
+      }
+      
+      .media-footer {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .media-actions {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <i class="fas fa-share-alt"></i>
+      <h1>Shared Media</h1>
+    </div>
+    <a href="/" class="home-btn">
+      <i class="fas fa-home"></i>
+      Go to Gallery
+    </a>
+  </header>
+  
+  <div id="media-container" class="media-container">
+    <div class="loading">
+      <i class="fas fa-spinner"></i>
+      <p>Loading media...</p>
+    </div>
+  </div>
+  
+  <footer>
+    Media Hosting - Share your media files easily
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const mediaContainer = document.getElementById('media-container');
+      const fileId = window.location.pathname.split('/').pop();
+      
+      try {
+        const response = await fetch(`/file/${fileId}`);
+        
+        if (!response.ok) {
+          throw new Error('File not found');
+        }
+        
+        const file = await response.json();
+        document.title = `${file.name} - Media Hosting`;
+        
+        let mediaContent = '';
+        
+        if (file.type === 'image') {
+          mediaContent = `<img src="${file.path}" alt="${file.name}">`;
+        } else if (file.type === 'video') {
+          mediaContent = `<video src="${file.path}" controls autoplay></video>`;
+        } else if (file.type === 'audio') {
+          mediaContent = `
+            <div class="audio-container">
+              <div class="audio-icon"><i class="fas fa-music"></i></div>
+              <audio src="${file.path}" controls autoplay></audio>
+            </div>
+          `;
+        } else {
+          mediaContent = `<div class="unknown-icon"><i class="fas fa-file"></i></div>`;
+        }
+        
+        const date = new Date(file.uploadDate).toLocaleDateString();
+        
+        mediaContainer.innerHTML = `
+          <div class="media-header">
+            <div class="media-title">${file.name}</div>
+            <div class="media-meta">
+              <div><i class="fas fa-hdd"></i> ${file.size}</div>
+              <div><i class="fas fa-calendar-alt"></i> ${date}</div>
+              <div><i class="fas fa-file-${file.type}"></i> ${file.type.charAt(0).toUpperCase() + file.type.slice(1)}</div>
+            </div>
+          </div>
+          <div class="media-content">
+            ${mediaContent}
+          </div>
+          <div class="media-footer">
+            <div>Shared via Media Hosting</div>
+            <div class="media-actions">
+              <a href="${file.path}" target="_blank" class="action-btn">
+                <i class="fas fa-external-link-alt"></i> Open in New Tab
+              </a>
+              <a href="${file.path}" download="${file.name}" class="action-btn download">
+                <i class="fas fa-download"></i> Download
+              </a>
+            </div>
+          </div>
+        `;
+        
+      } catch (error) {
+        mediaContainer.innerHTML = `
+          <div class="error-container">
+            <div class="error-icon"><i class="fas fa-exclamation-circle"></i></div>
+            <div class="error-title">Media Not Found</div>
+            <div class="error-message">The file you're looking for might have been removed or is no longer available.</div>
+            <a href="/" class="home-btn">
+              <i class="fas fa-home"></i>
+              Go to Gallery
+            </a>
+          </div>
+        `;
+      }
+    });
+  </script>
+</body>
+</html>

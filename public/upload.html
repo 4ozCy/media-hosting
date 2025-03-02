@@ -1,0 +1,432 @@
+infiniteaddingnfinitenfinite!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Media - Media Hosting</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3f37c9;
+      --accent-color: #4cc9f0;
+      --text-color: #333;
+      --light-gray: #f8f9fa;
+      --medium-gray: #e9ecef;
+      --dark-gray: #6c757d;
+      --success-color: #4CAF50;
+      --danger-color: #f44336;
+      --border-radius: 8px;
+      --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: var(--light-gray);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+    
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--medium-gray);
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .logo i {
+      font-size: 24px;
+      color: var(--primary-color);
+    }
+    
+    h1 {
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+    
+    .back-btn {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-size: 16px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
+    }
+    
+    .back-btn:hover {
+      background-color: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+    
+    .upload-container {
+      background-color: white;
+      border-radius: var(--border-radius);
+      padding: 30px;
+      box-shadow: var(--box-shadow);
+    }
+    
+    .form-group {
+      margin-bottom: 25px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+    
+    .file-drop-area {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      width: 100%;
+      height: 200px;
+      padding: 25px;
+      border: 2px dashed var(--medium-gray);
+      border-radius: var(--border-radius);
+      transition: var(--transition);
+      background-color: var(--light-gray);
+      text-align: center;
+      cursor: pointer;
+    }
+    
+    .file-drop-area.highlight {
+      border-color: var(--primary-color);
+      background-color: rgba(67, 97, 238, 0.05);
+    }
+    
+    .file-drop-area i {
+      font-size: 48px;
+      color: var(--dark-gray);
+      margin-bottom: 15px;
+    }
+    
+    .file-message {
+      font-size: 16px;
+      color: var(--dark-gray);
+      margin-bottom: 10px;
+    }
+    
+    .file-input {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+    
+    .file-name {
+      margin-top: 15px;
+      font-size: 14px;
+      color: var(--text-color);
+      font-weight: 500;
+      word-break: break-all;
+    }
+    
+    .preview-container {
+      margin-top: 25px;
+      text-align: center;
+      display: none;
+      background-color: var(--light-gray);
+      padding: 20px;
+      border-radius: var(--border-radius);
+    }
+    
+    .preview-container img, 
+    .preview-container video {
+      max-width: 100%;
+      max-height: 300px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+    }
+    
+    .preview-container audio {
+      width: 100%;
+    }
+    
+    .submit-btn {
+      background-color: var(--success-color);
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      transition: var(--transition);
+      font-weight: 600;
+    }
+    
+    .submit-btn:hover {
+      background-color: #3d8b40;
+      transform: translateY(-2px);
+    }
+    
+    .error-message {
+      color: var(--danger-color);
+      margin-top: 8px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .info-text {
+      margin-top: 25px;
+      color: var(--dark-gray);
+      font-size: 14px;
+      background-color: var(--light-gray);
+      padding: 15px;
+      border-radius: var(--border-radius);
+    }
+    
+    .info-text h3 {
+      margin-bottom: 10px;
+      color: var(--text-color);
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .info-text ul {
+      list-style-type: none;
+      margin-left: 10px;
+    }
+    
+    .info-text li {
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .info-text li i {
+      color: var(--primary-color);
+    }
+    
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+      
+      .back-btn {
+        align-self: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <i class="fas fa-cloud-upload-alt"></i>
+      <h1>Upload Media</h1>
+    </div>
+    <a href="/" class="back-btn">
+      <i class="fas fa-arrow-left"></i>
+      Back to Gallery
+    </a>
+  </header>
+  
+  <div class="upload-container">
+    <form action="/upload" method="post" enctype="multipart/form-data" id="upload-form">
+      <div class="form-group">
+        <label for="mediaFile">Select or drag & drop a media file:</label>
+        <div class="file-drop-area" id="drop-area">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <div class="file-message">Drag & drop files here or click to browse</div>
+          <input type="file" id="mediaFile" name="mediaFile" class="file-input" accept="image/*,video/*,audio/*" required>
+        </div>
+        <div class="file-name" id="file-name">No file chosen</div>
+        <div class="error-message" id="error-message"></div>
+      </div>
+      
+      <div class="preview-container" id="preview-container"></div>
+      
+      <button type="submit" class="submit-btn" id="submit-btn">
+        <i class="fas fa-upload"></i>
+        Upload Media
+      </button>
+      
+      <div class="info-text">
+        <h3><i class="fas fa-info-circle"></i> File Requirements</h3>
+        <ul>
+          <li><i class="fas fa-image"></i> Images: JPG, PNG, GIF, SVG, WebP</li>
+          <li><i class="fas fa-video"></i> Videos: MP4, WebM, MOV</li>
+          <li><i class="fas fa-music"></i> Audio: MP3, WAV, OGG</li>
+          <li><i class="fas fa-weight-hanging"></i> Maximum file size: 10MB</li>
+        </ul>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const fileInput = document.getElementById('mediaFile');
+      const fileNameDisplay = document.getElementById('file-name');
+      const previewContainer = document.getElementById('preview-container');
+      const errorMessage = document.getElementById('error-message');
+      const uploadForm = document.getElementById('upload-form');
+      const dropArea = document.getElementById('drop-area');
+      const submitBtn = document.getElementById('submit-btn');
+      
+      // Prevent default drag behaviors
+      ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, preventDefaults, false);
+        document.body.addEventListener(eventName, preventDefaults, false);
+      });
+      
+      // Highlight drop area when item is dragged over it
+      ['dragenter', 'dragover'].forEach(eventName => {
+        dropArea.addEventListener(eventName, highlight, false);
+      });
+      
+      ['dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, unhighlight, false);
+      });
+      
+      // Handle dropped files
+      dropArea.addEventListener('drop', handleDrop, false);
+      
+      function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      
+      function highlight() {
+        dropArea.classList.add('highlight');
+      }
+      
+      function unhighlight() {
+        dropArea.classList.remove('highlight');
+      }
+      
+      function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        fileInput.files = files;
+        handleFiles(files[0]);
+      }
+      
+      fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          handleFiles(file);
+        }
+      });
+      
+      function handleFiles(file) {
+        if (!file) {
+          fileNameDisplay.textContent = 'No file chosen';
+          previewContainer.style.display = 'none';
+          errorMessage.innerHTML = '';
+          return;
+        }
+        
+        // Display file name
+        fileNameDisplay.textContent = file.name;
+        
+        // Validate file size (10MB max)
+        if (file.size > 10 * 1024 * 1024) {
+          errorMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> File size exceeds 10MB limit';
+          previewContainer.style.display = 'none';
+          submitBtn.disabled = true;
+          return;
+        } else {
+          errorMessage.innerHTML = '';
+          submitBtn.disabled = false;
+        }
+        
+        // Create preview based on file type
+        previewContainer.innerHTML = '';
+        
+        if (file.type.startsWith('image/')) {
+          const img = document.createElement('img');
+          img.src = URL.createObjectURL(file);
+          previewContainer.appendChild(img);
+          previewContainer.style.display = 'block';
+        } else if (file.type.startsWith('video/')) {
+          const video = document.createElement('video');
+          video.src = URL.createObjectURL(file);
+          video.controls = true;
+          previewContainer.appendChild(video);
+          previewContainer.style.display = 'block';
+        } else if (file.type.startsWith('audio/')) {
+          const audio = document.createElement('audio');
+          audio.src = URL.createObjectURL(file);
+          audio.controls = true;
+          previewContainer.appendChild(audio);
+          previewContainer.style.display = 'block';
+        } else {
+          previewContainer.style.display = 'none';
+          errorMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> Unsupported file type';
+          submitBtn.disabled = true;
+        }
+      }
+      
+      uploadForm.addEventListener('submit', (e) => {
+        const file = fileInput.files[0];
+        
+        if (!file) {
+          e.preventDefault();
+          errorMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please select a file';
+          return;
+        }
+        
+        if (file.size > 10 * 1024 * 1024) {
+          e.preventDefault();
+          errorMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> File size exceeds 10MB limit';
+          return;
+        }
+        
+        if (!file.type.startsWith('image/') && 
+            !file.type.startsWith('video/') && 
+            !file.type.startsWith('audio/')) {
+          e.preventDefault();
+          errorMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> Only media files are allowed';
+          return;
+        }
+        
+        // Show loading state
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+        submitBtn.disabled = true;
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Media Hosting</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3f37c9;
+      --accent-color: #4cc9f0;
+      --text-color: #333;
+      --light-gray: #f8f9fa;
+      --medium-gray: #e9ecef;
+      --dark-gray: #6c757d;
+      --success-color: #4CAF50;
+      --danger-color: #f44336;
+      --border-radius: 8px;
+      --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: var(--light-gray);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+    
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--medium-gray);
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .logo i {
+      font-size: 24px;
+      color: var(--primary-color);
+    }
+    
+    h1 {
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+    
+    .upload-btn {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-size: 16px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
+    }
+    
+    .upload-btn:hover {
+      background-color: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+    
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 25px;
+    }
+    
+    .media-item {
+      background-color: white;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--box-shadow);
+      transition: var(--transition);
+      position: relative;
+    }
+    
+    .media-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .media-preview {
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--medium-gray);
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .media-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .media-preview video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .media-preview audio {
+      width: 90%;
+    }
+    
+    .media-type-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .media-info {
+      padding: 15px;
+    }
+    
+    .media-name {
+      font-weight: bold;
+      margin-bottom: 8px;
+      word-break: break-all;
+      font-size: 16px;
+      color: var(--text-color);
+    }
+    
+    .media-meta {
+      color: var(--dark-gray);
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    
+    .media-meta div {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .media-actions {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 15px;
+      background-color: var(--light-gray);
+      border-top: 1px solid var(--medium-gray);
+    }
+    
+    .media-actions a {
+      text-decoration: none;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 500;
+      font-size: 14px;
+      transition: var(--transition);
+    }
+    
+    .media-actions a:hover {
+      color: var(--secondary-color);
+    }
+    
+    .audio-icon, .unknown-icon {
+      font-size: 64px;
+      color: var(--dark-gray);
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 80px 20px;
+      background-color: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+    }
+    
+    .empty-state h2 {
+      color: var(--primary-color);
+      margin-bottom: 15px;
+    }
+    
+    .empty-state p {
+      color: var(--dark-gray);
+      margin-bottom: 25px;
+    }
+    
+    .empty-state .upload-btn {
+      display: inline-flex;
+      margin: 0 auto;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 50px;
+      color: var(--dark-gray);
+    }
+    
+    .loading i {
+      font-size: 40px;
+      margin-bottom: 15px;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .copy-link-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+    
+    .copy-link-btn:hover {
+      color: var(--secondary-color);
+    }
+    
+    .tooltip {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 140px;
+      background-color: #555;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+      bottom: 150%;
+      left: 50%;
+      margin-left: -75px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .tooltip .tooltiptext::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: #555 transparent transparent transparent;
+    }
+    
+    .tooltip.show .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+    
+    @media (max-width: 768px) {
+      .media-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      }
+      
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+      
+      .upload-btn {
+        align-self: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <i class="fas fa-photo-video"></i>
+      <h1>Media Hosting</h1>
+    </div>
+    <a href="/upload" class="upload-btn">
+      <i class="fas fa-cloud-upload-alt"></i>
+      Upload Media
+    </a>
+  </header>
+  
+  <div id="media-container">
+    <div class="loading">
+      <i class="fas fa-spinner"></i>
+      <p>Loading media files...</p>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const mediaContainer = document.getElementById('media-container');
+      
+      try {
+        const response = await fetch('/files');
+        const files = await response.json();
+        
+        if (files.length === 0) {
+          mediaContainer.innerHTML = `
+            <div class="empty-state">
+              <h2>No media files yet</h2>
+              <p>Upload your first media file to get started!</p>
+              <a href="/upload" class="upload-btn">
+                <i class="fas fa-cloud-upload-alt"></i>
+                Upload Media
+              </a>
+            </div>
+          `;
+          return;
+        }
+        
+        const mediaGrid = document.createElement('div');
+        mediaGrid.className = 'media-grid';
+        
+        files.forEach(file => {
+          const mediaItem = document.createElement('div');
+          mediaItem.className = 'media-item';
+          
+          let previewContent = '';
+          let typeBadge = '';
+          
+          if (file.type === 'image') {
+            previewContent = `<img src="${file.path}" alt="${file.name}">`;
+            typeBadge = `<div class="media-type-badge"><i class="fas fa-image"></i> Image</div>`;
+          } else if (file.type === 'video') {
+            previewContent = `<video src="${file.path}" controls></video>`;
+            typeBadge = `<div class="media-type-badge"><i class="fas fa-video"></i> Video</div>`;
+          } else if (file.type === 'audio') {
+            previewContent = `<div class="audio-icon"><i class="fas fa-music"></i></div>`;
+            typeBadge = `<div class="media-type-badge"><i class="fas fa-music"></i> Audio</div>`;
+          } else {
+            previewContent = `<div class="unknown-icon"><i class="fas fa-file"></i></div>`;
+            typeBadge = `<div class="media-type-badge"><i class="fas fa-file"></i> File</div>`;
+          }
+          
+          const date = new Date(file.uploadDate).toLocaleDateString();
+          const shareUrl = `${window.location.origin}${file.shareLink}`;
+          
+          mediaItem.innerHTML = `
+            <div class="media-preview">
+              ${previewContent}
+              ${typeBadge}
+            </div>
+            <div class="media-info">
+              <div class="media-name">${file.name}</div>
+              <div class="media-meta">
+                <div><i class="fas fa-hdd"></i> ${file.size}</div>
+                <div><i class="fas fa-calendar-alt"></i> ${date}</div>
+              </div>
+            </div>
+            <div class="media-actions">
+              <a href="${file.path}" target="_blank"><i class="fas fa-eye"></i> View</a>
+              <a href="${file.path}" download="${file.name}"><i class="fas fa-download"></i> Download</a>
+              <div class="tooltip">
+                <button class="copy-link-btn" onclick="copyShareLink('${shareUrl}', this)">
+                  <i class="fas fa-share-alt"></i> Share
+                </button>
+                <span class="tooltiptext">Link copied!</span>
+              </div>
+            </div>
+          `;
+          
+          mediaGrid.appendChild(mediaItem);
+        });
+        
+        mediaContainer.innerHTML = '';
+        mediaContainer.appendChild(mediaGrid);
+        
+      } catch (error) {
+        mediaContainer.innerHTML = `
+          <div class="empty-state">
+            <h2>Error loading media files</h2>
+            <p>${error.message}</p>
+            <a href="/" class="upload-btn">
+              <i class="fas fa-sync"></i>
+              Retry
+            </a>
+          </div>
+        `;
+      }
+    });
+    
+    function copyShareLink(url, button) {
+      navigator.clipboard.writeText(url).then(() => {
+        const tooltip = button.parentElement;
+        tooltip.classList.add('show');
+        setTimeout(() => {
+          tooltip.classList.remove('show');
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
