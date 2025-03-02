@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     // Generate a unique ID for the file
-    const uniqueId = crypto.randomBytes(16).toString('hex');
+    const uniqueId = crypto.randomBytes(5).toString('hex');
     const fileExt = path.extname(file.originalname);
     cb(null, Date.now() + '-' + uniqueId + fileExt);
   }
@@ -27,7 +27,7 @@ const storage = multer.diskStorage({
 // Create the multer instance
 const upload = multer({ 
   storage: storage,
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
+  limits: { fileSize: 2000 * 1024 * 1024 }, // 10MB limit
   fileFilter: (req, file, cb) => {
     // Accept images, videos, and audio files
     if (file.mimetype.startsWith('image/') || 
